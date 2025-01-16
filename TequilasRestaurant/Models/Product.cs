@@ -1,4 +1,7 @@
-﻿namespace TequilasRestaurant.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TequilasRestaurant.Models
 {
 	public class Product
 	{
@@ -8,8 +11,16 @@
 		public decimal Price { get; set; }
 		public int Stock { get; set; }
 		public int CategoryId { get; set; }
-		public Category? Category { get; set; }
-		public ICollection<OrderItem>? OrderItems { get; set; }
-		public ICollection<ProductIngredient>? ProductIngredients { get; set; }
+
+		[NotMapped]
+		public IFormFile ImageFile { get; set; }
+		public string ImageUrl { get; set; } = "https://via.placeholder.com/150";
+
+		[ValidateNever]
+		public Category? Category { get; set; } // A Product belongs to a Category
+		[ValidateNever]
+		public ICollection<OrderItem>? OrderItems { get; set; } // A Product can be in many Order Items
+		[ValidateNever]
+		public ICollection<ProductIngredient>? ProductIngredients { get; set; } // A Product can have many ingredients
 	}
 }
