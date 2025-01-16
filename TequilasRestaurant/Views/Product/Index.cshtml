@@ -11,6 +11,12 @@
                 <input type="hidden" asp-for="@p.ProductId" name="id" />
                 <div class="card" style="width: 18rem;">
                     <img src="@Url.Content("~/images/" + p?.ImageUrl)" class="card-img-top fixed-image-height" alt="@p.Description" />
+                    <div class="card-body">
+                        <h5 class="card-title">@p.Name</h5>
+                        <p class="card-text">@p.Description</p>
+                        <p class="card-text">@p.Price.ToString("C")</p>
+                        <p class="card-text">Quantity in Stock: @p.Stock</p>
+                    </div>
                 </div>
             </form>
         </div>
