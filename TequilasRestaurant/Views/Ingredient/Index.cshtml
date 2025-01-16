@@ -15,14 +15,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Ingredient ingredient in Model)
+        @foreach (Ingredient i in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => ingredient.Name)
+                    @Html.DisplayFor(modelItem => i.Name)
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-itemid="@ingredient.IngredientId">Details</a>
+                    <a asp-action="Details" asp-route-id="@i.IngredientId">Details</a>
                 </td>
             </tr>
         }
