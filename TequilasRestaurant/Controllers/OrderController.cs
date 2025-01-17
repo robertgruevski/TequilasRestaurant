@@ -84,6 +84,75 @@ namespace TequilasRestaurant.Controllers
 			return RedirectToAction("Create", model);
 		}
 
+		[HttpGet]
+		[Authorize]
+		public async Task<IActionResult> Cart()
+		{
+			// Retrieve the OrderViewModel from session or other state management
+			var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
+
+			if (model == null || model.OrderItems.Count == 0)
+			{
+				return RedirectToAction("Create");
+			}
+
+			return View(model);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public async Task<IActionResult> PlaceOrder()
+		{
+			var model = HttpContext.Session.Get<OrderViewModel>("OrderViewModel");
+
+			if (model == null || model.OrderItems.Count == 0)
+			{
+				return RedirectToAction("Create");
+			}
+
+			// Create a new Order entity
+			Order order = new Order
+			{
+				OrderDate = DateTime.Now,
+				TotalAmount = model.TotalAmount,
+				UserId = _userManager.GetUserId(User)
+			};
+
+			// Add OrderItems to the Order entity
+			foreach (var item in model.OrderItems)
+			{
+				order.OrderItems.Add(new OrderItem
+				{
+					ProductId = item.ProductId,
+					Quantity = item.Quantity,
+					Price = item.Price
+				});
+			}
+
+			// Save the Order entity to the database
+			await _orders.AddAsync(order);
+
+			// Clear the cart from session
+			HttpContext.Session.Remove("OrderViewModel");
+
+			// Redirect to a confirmation page or thank you page
+			return RedirectToAction("ViewOrders");
+		}
+
+		[HttpGet]
+		[Authorize]
+		public async Task<IActionResult> ViewOrders()
+		{
+			var userId = _userManager.GetUserId(User);
+
+			var userOrders = await _orders.GetAllByIdAsync(userId, "UserId", new QueryOptions<Order>
+			{
+				Includes = "OrderItems.Product"
+			});
+
+			return View(userOrders);
+		}
+
 		public IActionResult Index()
 		{
 			return View();
