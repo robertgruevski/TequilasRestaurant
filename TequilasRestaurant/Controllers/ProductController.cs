@@ -49,9 +49,8 @@ namespace TequilasRestaurant.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddEdit(Product product, int[] ingredientIds, int catId)
 		{
-			ViewBag.Ingredients = await ingredients.GetAllAsync();
-			ViewBag.Categories = await categories.GetAllAsync();
-			if (ModelState.IsValid)
+
+			if (ModelState.IsValid) 
 			{
 				if (product.ImageFile != null)
 				{
@@ -68,7 +67,8 @@ namespace TequilasRestaurant.Controllers
 				}
 				if (product.ProductId == 0)
 				{
-
+					ViewBag.Ingredients = await ingredients.GetAllAsync();
+					ViewBag.Categories = await categories.GetAllAsync();
 					product.CategoryId = catId;
 
 					// Add ingredients

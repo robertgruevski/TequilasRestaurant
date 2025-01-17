@@ -17,7 +17,7 @@ namespace TequilasRestaurant.Models
 		public int CategoryId { get; set; }
 
 		[NotMapped]
-		public IFormFile ImageFile { get; set; }
+		public IFormFile? ImageFile { get; set; }
 		public string ImageUrl { get; set; } = "https://via.placeholder.com/150";
 
 		[ValidateNever]
