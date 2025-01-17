@@ -3,6 +3,8 @@
     ViewBag.Title = "Tequila\'s Menu Items";
 }
 <h2>Tequilas Menu Items</h2>
+<a asp-action="AddEdit" asp-controller="Product" class="btn btn-primary">Create New Item</a>
+
 <div class="row">
     @foreach (Product p in Model)
     {
@@ -16,6 +18,7 @@
                         <p class="card-text">@p.Description</p>
                         <p class="card-text">@p.Price.ToString("C")</p>
                         <p class="card-text">Quantity in Stock: @p.Stock</p>
+                        <a asp-action="AddEdit" asp-controller="Product" asp-action="AddEdit" asp-route-id="@p.ProductId" class="btn btn-primary"><i class="bi bi-pencil-fill">Edit</i></a>
                     </div>
                 </div>
             </form>
